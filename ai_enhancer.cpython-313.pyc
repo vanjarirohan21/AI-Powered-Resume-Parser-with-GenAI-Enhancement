@@ -1,0 +1,22 @@
+import re
+
+def extract_name(text: str, doc) -> str:
+    # Step 1: Rule-based (first lines of resume)
+    lines = text.splitlines()
+    for line in lines[:5]:
+        clean_line = line.strip()
+        if 2 <= len(clean_line.split()) <= 3 and clean_line.replace(" ", "").isalpha():
+            return clean_line
+
+    # Step 2: Regex
+    name_pattern = r"\b[A-Z][a-z]+ [A-Z][a-z]+\b"
+    matches = re.findall(name_pattern, text)
+    if matches:
+        return matches[0]
+
+    # Step 3: spaCy NER
+    for ent in doc.ents:
+        if ent.label_ == "PERSON":
+            return ent.text
+
+    return "Not Found"

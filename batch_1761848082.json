@@ -1,0 +1,116 @@
+[
+    {
+        "name": "Aenugu Manish Reddy",
+        "email": "aenugumanishreddy@gmail.com",
+        "skills": [
+            "c++",
+            "python",
+            "java",
+            "html",
+            "css",
+            "react",
+            "angular",
+            "next.js",
+            "sql",
+            "mongodb",
+            "django",
+            "machine learning",
+            "git",
+            "agile",
+            "nextjs",
+            "spring boot"
+        ],
+        "education": [
+            {
+                "degree": "BTech",
+                "institution": "BTech Anuarg Univeristy"
+            }
+        ],
+        "summary": "Final-year Computer Science undergraduate specializing in web development, blockchain, and artificial intelligence. Possesses a strong track record of success in multiple regional and national hackathons, demonstrating advanced problem-solving and prototyping abilities. Experienced in a range of technologies including React.js, Next.js, Python, and smart contracts, complemented by skills in teamwork and rapid adaptation. Eager to secure a software development role focused on emerging technologies and innovative solutions.",
+        "projects": [
+            {
+                "title": "Procto Plus",
+                "tech": [
+                    "Blockchain",
+                    "Web Development",
+                    "Smart Contracts"
+                ],
+                "bullets": [
+                    "Developed a virtual assessment platform using blockchain to ensure high security and integrity."
+                ],
+                "start_end": ""
+            },
+            {
+                "title": "PharmaChain",
+                "tech": [
+                    "Full Stack Web Development",
+                    "Solidity",
+                    "IPFS",
+                    "Hyperledger",
+                    "Smart Contracts",
+                    "MetaMask",
+                    "Ganache"
+                ],
+                "bullets": [
+                    "Engineered a blockchain-powered healthcare system with AI integration for secure health records, drug authenticity, and fraud prevention."
+                ],
+                "start_end": ""
+            }
+        ],
+        "work_experience": [
+            {
+                "company": "Swecha",
+                "position": "Tech lead Intern",
+                "duration": "May 2025 - present",
+                "bullets": [
+                    "Building AI-driven solutions using Python, DevOps, and region-specific datasets."
+                ]
+            },
+            {
+                "company": "Accelchain",
+                "position": "Campus Ambassador",
+                "duration": "November 2023",
+                "bullets": [
+                    "Led blockchain advocacy on campus, driving student engagement through events and strategic networking."
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Vedhin Govind",
+        "email": "vedh0513@gmail.com",
+        "skills": [
+            "c++",
+            "git",
+            "java",
+            "python",
+            "javascript",
+            "react",
+            "node.js",
+            "express",
+            "express.js",
+            "html",
+            "css",
+            "machine learning",
+            "pandas",
+            "numpy",
+            "scikit-learn",
+            "tensorflow",
+            "pytorch",
+            "sql",
+            "mongodb",
+            "typescript",
+            "nodejs",
+            "vue"
+        ],
+        "education": [
+            {
+                "degree": "B.Tech",
+                "institution": "Anurag University\nHyderabad"
+            }
+        ],
+        "summary": "",
+        "projects": [],
+        "work_experience": []
+    }
+]

@@ -1,0 +1,31 @@
+import re
+from ..config import nlp
+
+def extract_education(text: str) -> list:
+    education = []
+    education_section = re.search(
+        r"(?i)\n(Education|Qualifications|Academic Background|Education & Training|Academic History)\n",
+        text
+    )
+
+    if education_section:
+        content = text[education_section.end():]
+        next_section = re.search(
+            r"\n(Experience|Skills|Projects|Work History|Employment)\n", content, re.IGNORECASE
+        )
+        if next_section:
+            content = content[:next_section.start()]
+
+        degree_pattern = r"(?i)(B\.?Tech|M\.?Tech|M\.?S\.?|B\.?E\.?|Bachelor|Master|Ph\.?D|MBA|BSc|MSc|BCA|MCA)"
+        found_degrees = re.findall(degree_pattern, content)
+
+        doc = nlp(content)
+        orgs = [ent.text for ent in doc.ents if ent.label_ == "ORG"]
+
+        for degree in found_degrees:
+            education.append({
+                "degree": degree.strip(),
+                "institution": orgs[0] if orgs else "Not Extracted Yet"
+            })
+
+    return education

@@ -1,0 +1,103 @@
+# app/parsers_core/skills_parser.py
+import re
+from pathlib import Path
+from typing import List, Tuple
+
+# Default (small) list — you can replace this by loading a bigger file via SKILLS_FILE
+DEFAULT_SKILLS = [
+    'python', 'java', 'c++', 'javascript', 'typescript', 'sql', 'nosql', 'react',
+    'angular', 'vue', 'django', 'flask', 'fastapi', 'spring boot', 'html', 'css',
+    'aws', 'azure', 'gcp', 'docker', 'kubernetes', 'git', 'jenkins', 'scrum',
+    'agile', 'machine learning', 'deep learning', 'nlp', 'pandas', 'numpy',
+    'scikit-learn', 'tensorflow', 'pytorch', 'mongodb', 'postgresql', 'rest api',
+    'node.js', 'nodejs', 'express', 'express.js', 'next.js', 'nextjs'
+]
+
+# Optional: point this to a plaintext skills file (one skill per line)
+SKILLS_FILE = Path("data/skills.txt")  # change if you keep a larger list on disk
+
+# Try to import RapidFuzz for fuzzy fallback; if not available we still work with exact matches
+try:
+    from rapidfuzz import process, fuzz  # type: ignore
+    _HAS_RAPIDFUZZ = True
+except Exception:
+    _HAS_RAPIDFUZZ = False
+
+_non_alnum = re.compile(r'[^a-z0-9]+')
+
+def _normalize_text_for_search(s: str) -> str:
+    # Lowercase and collapse punctuation/spaces — used for robust matching
+    return _non_alnum.sub(' ', s.lower()).strip()
+
+def _load_skills() -> List[str]:
+    if SKILLS_FILE.exists():
+        try:
+            with SKILLS_FILE.open("r", encoding="utf-8") as f:
+                skills = [ln.strip() for ln in f if ln.strip()]
+                if skills:
+                    return skills
+        except Exception:
+            pass
+    return DEFAULT_SKILLS
+
+# prepare canonical skill list and normalized forms
+_SKILLS_ORIG: List[str] = _load_skills()
+_SKILLS_TUPLES: List[Tuple[str,str]] = [(s, _normalize_text_for_search(s)) for s in _SKILLS_ORIG]
+
+def extract_skills(text: str, fuzzy_threshold: int = 80, max_results: int = 0) -> List[str]:
+    """
+    Extract skills from resume text.
+
+    - Returns a list of matched skills (original-casing from the SKILLS list).
+    - Matches are ordered by the first appearance in the resume text.
+    - Uses exact normalized matching first, then (optionally) a fuzzy fallback if rapidfuzz is installed.
+    - Set max_results>0 to limit the number of returned skills.
+    """
+    if not text:
+        return []
+
+    txt_norm = _normalize_text_for_search(text)
+
+    hits = {}  # skill_orig -> first_pos (int)
+
+    # 1) exact normalized matching (fast + reliable)
+    for orig, norm in _SKILLS_TUPLES:
+        # search normalized skill in normalized document text
+        # use word-boundary style using spaces (since we've normalized punctuation to spaces)
+        pattern = r'\b' + re.escape(norm) + r'\b'
+        if re.search(pattern, txt_norm):
+            pos = txt_norm.find(norm)
+            if pos >= 0:
+                # keep earliest occurrence if skill appears multiple times
+                prev = hits.get(orig)
+                if prev is None or pos < prev:
+                    hits[orig] = pos
+
+    # 2) fuzzy fallback (only if RapidFuzz is installed) for skills not found exactly
+    if _HAS_RAPIDFUZZ:
+        # prepare list of normalized skill strings not already matched
+        remaining = [(orig, norm) for orig, norm in _SKILLS_TUPLES if orig not in hits]
+        if remaining:
+            # choices for RapidFuzz are normalized skill strings; map normalized -> orig
+            choices = [norm for (_, norm) in remaining]
+            norm_to_orig = {norm: orig for (orig, norm) in remaining}
+            # compare the whole document against choices using partial_ratio
+            # this is a broad heuristic: if the normalized skill appears with minor diffs,
+            # partial_ratio will be high.
+            results = process.extract(txt_norm, choices, scorer=fuzz.partial_ratio, limit=len(choices))
+            for norm_match, score, _ in results:
+                if score >= fuzzy_threshold:
+                    orig = norm_to_orig.get(norm_match)
+                    if orig and orig not in hits:
+                        pos = txt_norm.find(norm_match)
+                        hits[orig] = pos if pos >= 0 else 10**9
+
+    # 3) produce ordered list by position
+    ordered = sorted(hits.items(), key=lambda kv: kv[1])
+    skills_ordered = [k for k, _ in ordered]
+
+    # 4) optionally limit results
+    if max_results and max_results > 0:
+        skills_ordered = skills_ordered[:max_results]
+
+    return skills_ordered

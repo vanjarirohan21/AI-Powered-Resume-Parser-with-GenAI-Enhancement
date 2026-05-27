@@ -1,0 +1,135 @@
+[
+    {
+        "name": "Vedhin Govind",
+        "email": "vedh0513@gmail.com",
+        "skills": [
+            "c++",
+            "git",
+            "java",
+            "python",
+            "javascript",
+            "react",
+            "node.js",
+            "express",
+            "express.js",
+            "html",
+            "css",
+            "machine learning",
+            "pandas",
+            "numpy",
+            "scikit-learn",
+            "tensorflow",
+            "pytorch",
+            "sql",
+            "mongodb",
+            "typescript",
+            "nodejs",
+            "vue"
+        ],
+        "education": [
+            {
+                "degree": "B.Tech",
+                "institution": "Anurag University\nHyderabad"
+            }
+        ],
+        "summary": "Computer Science student specializing in full-stack web development with a strong command of Java, Python, JavaScript, React, and Node.js. Proven ability to architect and deploy scalable applications, demonstrated by developing a hotel management portal and an AI-powered news aggregation platform. Possesses a solid foundation in data structures, algorithms, and machine learning principles. Complemented by leadership experience in mentoring peers and organizing technical workshops for over 700 students.",
+        "projects": [
+            {
+                "title": "Hotel Management Portal",
+                "tech": [
+                    "HTML",
+                    "CSS",
+                    "JavaScript",
+                    "EJS",
+                    "Node.js",
+                    "Express.js",
+                    "MongoDB"
+                ],
+                "bullets": [
+                    "Architected a full-stack hotel management system with secure authentication and dynamic routing, serving 100+ listings and 500+ user reviews.",
+                    "Engineered robust MongoDB schemas and RESTful APIs with middleware validation, ensuring 99% uptime and data integrity.",
+                    "Optimized database queries and implemented caching strategies, improving application response time by 35%."
+                ],
+                "start_end": ""
+            },
+            {
+                "title": "Business Digest \u2013 AI-Powered Briefing Engine",
+                "tech": [
+                    "Node.js",
+                    "Express.js",
+                    "MongoDB",
+                    "Groq API",
+                    "GNews API",
+                    "React",
+                    "TypeScript"
+                ],
+                "bullets": [
+                    "Spearheaded development of an AI-powered news aggregation platform, integrating Groq LLM and GNews API to deliver personalized business insights.",
+                    "Architected secure backend infrastructure with Node.js and MongoDB, implementing OAuth authentication via Passport.js for 500+ users.",
+                    "Designed scalable RESTful APIs supporting a React and TypeScript frontend for real-time competitor analysis and trend forecasting."
+                ],
+                "start_end": ""
+            },
+            {
+                "title": "Community Crop Exchange Platform",
+                "tech": [
+                    "HTML",
+                    "CSS",
+                    "JavaScript",
+                    "EJS",
+                    "Node.js",
+                    "Express.js",
+                    "MongoDB"
+                ],
+                "bullets": [
+                    "Engineered a collaborative agricultural platform connecting 200+ farmers, reducing crop wastage by 40% through optimized resource sharing.",
+                    "Implemented a WebSocket-based real-time communication system, accelerating trade negotiations by 60%.",
+                    "Developed location-aware filtering algorithms and secure authentication protocols to streamline resource discovery."
+                ],
+                "start_end": ""
+            }
+        ],
+        "work_experience": [
+            {
+                "company": "Web Club",
+                "position": "President",
+                "duration": "Aug. 2024 \u2013 May 2025",
+                "bullets": [
+                    "Spearheaded technical initiatives, orchestrating 10+ workshops and hackathons that enhanced web development skills for 700+ students.",
+                    "Forged strategic partnerships with industry professionals and faculty, securing mentorship and real-world project exposure for club members."
+                ]
+            },
+            {
+                "company": "Newbie Student Organization",
+                "position": "Mentor",
+                "duration": "Sep. 2023 \u2013 Nov. 2023",
+                "bullets": [
+                    "Mentored 40+ first-year students in C programming fundamentals, developing a comprehensive curriculum that improved coding proficiency by 85%."
+                ]
+            }
+        ],
+        "skill_gap_analysis": {
+            "required_skills": [
+                "react.js",
+                "javascript",
+                "html",
+                "css",
+                "redux",
+                "rest apis",
+                "git"
+            ],
+            "candidate_has_skills": [
+                "react",
+                "javascript",
+                "html",
+                "css",
+                "git"
+            ],
+            "missing_skills": [
+                "redux",
+                "rest apis"
+            ],
+            "candidate_score": 80
+        }
+    }
+]

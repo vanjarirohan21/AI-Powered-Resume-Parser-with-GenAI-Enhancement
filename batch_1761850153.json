@@ -1,0 +1,237 @@
+[
+    {
+        "name": "Aenugu Manish Reddy",
+        "email": "aenugumanishreddy@gmail.com",
+        "skills": [
+            "c++",
+            "python",
+            "java",
+            "html",
+            "css",
+            "react",
+            "angular",
+            "next.js",
+            "sql",
+            "mongodb",
+            "django",
+            "machine learning",
+            "git",
+            "agile",
+            "nextjs",
+            "spring boot"
+        ],
+        "education": [
+            {
+                "degree": "BTech",
+                "institution": "BTech Anuarg Univeristy"
+            }
+        ],
+        "work_experience": [
+            {
+                "company": "Accelchain",
+                "position": "Campus Ambassador",
+                "duration": "November 2023",
+                "bullets": [
+                    "Led blockchain advocacy on campus, driving student engagement through events and strategic networking."
+                ]
+            },
+            {
+                "company": "Swecha",
+                "position": "Tech lead Intern",
+                "duration": "May 2025 - present",
+                "bullets": [
+                    "Building impactful solutions using AI with Python, DevOps, and region-specific datasets."
+                ]
+            }
+        ],
+        "projects": [
+            {
+                "title": "Procto Plus",
+                "tech": [
+                    "Blockchain",
+                    "Web Development",
+                    "Smart Contracts"
+                ],
+                "bullets": [
+                    "Revolutionized virtual assessments by implementing a blockchain-based solution for enhanced security and integrity."
+                ],
+                "start_end": ""
+            },
+            {
+                "title": "PharmaChain",
+                "tech": [
+                    "Full Stack Web Development",
+                    "Solidity",
+                    "IPFS",
+                    "Hyperledger",
+                    "Smart Contracts",
+                    "MetaMask",
+                    "Ganache",
+                    "Ethereum",
+                    "Python",
+                    "AI"
+                ],
+                "bullets": [
+                    "Developed a blockchain-powered healthcare system with AI integration for secure health records, drug authenticity, and fraud prevention."
+                ],
+                "start_end": ""
+            }
+        ],
+        "summary": "Final-year Computer Science undergraduate with hands-on experience in Web Development, Blockchain, and AI. Demonstrates strong problem-solving and innovation skills, evidenced by multiple wins at regional and national hackathons. Proficient in rapid prototyping, teamwork, and adapting to new technologies, seeking a challenging role in software development or emerging technologies.",
+        "skill_gap_analysis": {
+            "required_skills": [
+                "react.js",
+                "javascript",
+                "html",
+                "css",
+                "redux",
+                "rest api",
+                "git"
+            ],
+            "candidate_has_skills": [
+                "react",
+                "html",
+                "css",
+                "git"
+            ],
+            "missing_skills": [
+                "javascript",
+                "redux",
+                "rest api"
+            ],
+            "candidate_score": 75
+        }
+    },
+    {
+        "name": "Vedhin Govind",
+        "email": "vedh0513@gmail.com",
+        "skills": [
+            "c++",
+            "git",
+            "java",
+            "python",
+            "javascript",
+            "react",
+            "node.js",
+            "express",
+            "express.js",
+            "html",
+            "css",
+            "machine learning",
+            "pandas",
+            "numpy",
+            "scikit-learn",
+            "tensorflow",
+            "pytorch",
+            "sql",
+            "mongodb",
+            "typescript",
+            "fastapi",
+            "nodejs",
+            "vue"
+        ],
+        "education": [
+            {
+                "degree": "B.Tech",
+                "institution": "Anurag University\nHyderabad"
+            }
+        ],
+        "work_experience": [
+            {
+                "company": "Web Club",
+                "position": "President",
+                "duration": "Aug. 2024 \u2013 May 2025",
+                "bullets": [
+                    "Spearheaded technical initiatives, orchestrating 10+ workshops and hackathons that enhanced web development skills for over 700 students.",
+                    "Forged strategic partnerships with industry professionals and faculty to secure mentorship and real-world project opportunities for club members."
+                ]
+            },
+            {
+                "company": "Newbie Student Organization",
+                "position": "Mentor",
+                "duration": "Sep. 2023 \u2013 Nov. 2023",
+                "bullets": [
+                    "Mentored over 40 first-year students in C programming fundamentals, developing a curriculum that improved coding proficiency by 85%."
+                ]
+            }
+        ],
+        "projects": [
+            {
+                "title": "Hotel Management Portal",
+                "tech": [
+                    "HTML",
+                    "CSS",
+                    "JavaScript",
+                    "EJS",
+                    "Node.js",
+                    "Express.js",
+                    "MongoDB"
+                ],
+                "bullets": [
+                    "Architected a full-stack hotel management system with secure authentication, dynamic routing, and support for over 100 listings and 500 user reviews.",
+                    "Engineered robust MongoDB schemas and RESTful APIs with middleware validation to ensure 99% uptime and data integrity.",
+                    "Optimized database queries and implemented caching strategies, improving application response time by 35%."
+                ],
+                "start_end": ""
+            },
+            {
+                "title": "Business Digest \u2013 AI-Powered Briefing Engine",
+                "tech": [
+                    "Node.js",
+                    "Express.js",
+                    "MongoDB",
+                    "Groq API",
+                    "GNews API"
+                ],
+                "bullets": [
+                    "Developed an AI-powered news aggregation platform by integrating Groq LLM and GNews API to deliver personalized business insights.",
+                    "Built a secure backend with Node.js and MongoDB, implementing OAuth authentication via Passport.js for over 500 users.",
+                    "Designed scalable RESTful APIs to support a React + TypeScript frontend, enabling real-time competitor analysis and trend forecasting."
+                ],
+                "start_end": ""
+            },
+            {
+                "title": "Community Crop Exchange Platform",
+                "tech": [
+                    "HTML",
+                    "CSS",
+                    "JavaScript",
+                    "EJS",
+                    "Node.js",
+                    "Express.js",
+                    "MongoDB"
+                ],
+                "bullets": [
+                    "Engineered a collaborative agricultural platform connecting over 200 farmers, which reduced crop wastage by 40%.",
+                    "Implemented a WebSocket-based real-time communication system that accelerated trade negotiations by 60%.",
+                    "Developed location-aware filtering algorithms and secure authentication protocols to streamline resource discovery."
+                ],
+                "start_end": ""
+            }
+        ],
+        "summary": "Computer Science student with a strong foundation in full-stack web development using the MERN stack and a demonstrated ability to architect and deploy complex applications. Possesses hands-on experience in building RESTful APIs, managing databases like MongoDB, and integrating AI services for enhanced functionality. Proven leadership and mentoring skills through roles in student organizations, driving technical education and community engagement.",
+        "skill_gap_analysis": {
+            "required_skills": [
+                "react.js",
+                "javascript",
+                "html",
+                "css",
+                "redux",
+                "rest apis",
+                "git"
+            ],
+            "candidate_has_skills": [
+                "react.js",
+                "javascript",
+                "html",
+                "css",
+                "git",
+                "rest apis"
+            ],
+            "missing_skills": [
+                "redux"
+            ],
+            "candidate_score": 86
+        }
+    }
+]

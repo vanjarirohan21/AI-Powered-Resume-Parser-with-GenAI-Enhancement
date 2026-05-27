@@ -1,0 +1,192 @@
+#app/parsers_core/project_parser.py(main caller funtion: extract_projects)
+from typing import List, Dict, Any, Tuple
+from .skills_parser import extract_skills
+import re
+
+# small tech tokens — expand by loading kaggle skills.csv if you want
+SKILLS_DB = [
+    "python","java","javascript","node.js","react","next.js","django","flask","fastapi",
+    "mongodb","postgresql","mysql","redis","docker","kubernetes","aws","gcp","azure",
+    "tensorflow","pytorch","numpy","pandas","scikit-learn","html","css","typescript"
+]
+
+PROJECT_HEADERS = ["projects", "project", "personal projects", "academic projects", "key projects"]
+SECTION_STOPS = ["education", "skills", "certifications", "experience", "work experience", "positions of responsibility"]
+
+BULLET_RE = re.compile(r'^[\s\-\u2022\u2023\u25E6\*\•\▪\◦]+')
+DATE_RE = re.compile(r'\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\.?\s*\d{4}\b', re.I)
+ACTION_VERB_RE = re.compile(r'^(built|developed|designed|engineered|implemented|spearheaded|led|created|architected)\b', re.I)
+
+def _normalize(text: str) -> str:
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    for b in ["\u2022","•","◦","▪","\u2023","\u25E6"]:
+        text = text.replace(b, " • ")
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    return text
+
+def _find_section_lines(text: str, header_candidates=PROJECT_HEADERS) -> List[str]:
+    txt = _normalize(text)
+    lines = [ln.rstrip() for ln in txt.splitlines()]
+    header_idx = None
+    lowered_lines = [re.sub(r'[^a-z0-9 ]',' ', ln.lower()) for ln in lines]
+    for i, low in enumerate(lowered_lines):
+        for cand in header_candidates:
+            if cand in low.split():
+                header_idx = i
+                break
+        if header_idx is not None:
+            break
+    if header_idx is None:
+        # fallback: find any line that contains the header phrase (not whole-word)
+        for i, low in enumerate(lowered_lines):
+            for cand in header_candidates:
+                if cand in low:
+                    header_idx = i
+                    break
+            if header_idx is not None:
+                break
+    if header_idx is None:
+        return []
+    out = []
+    for ln in lines[header_idx+1:]:
+        if not ln.strip():
+            out.append("")  # keep blanks
+            continue
+        low_ln = ln.lower()
+        if any(re.search(rf'\b{re.escape(stop)}\b', low_ln) for stop in SECTION_STOPS):
+            break
+        out.append(ln)
+    return out
+
+def _contains_tech_token(s: str) -> bool:
+    # Use extract_skills on the line (return True if at least one skill detected)
+    matches = extract_skills(s, fuzzy_threshold=80, max_results=3)
+    return len(matches) > 0
+
+
+def _looks_like_title(line: str, lookahead: List[str]) -> bool:
+    s = line.strip()
+    if not s:
+        return False
+    # avoid verb-starting long sentences
+    if ACTION_VERB_RE.match(s):
+        return False
+    # reject pure date lines
+    if DATE_RE.search(s) and len(s.split()) < 6:
+        return False
+    # strong punctuation signals for titles
+    if "|" in s or "–" in s or "—" in s or ":" in s:
+        return True
+    # short bullet-like line followed by bullet => likely title
+    if BULLET_RE.match(s):
+        clean = BULLET_RE.sub('', s).strip()
+        if 1 < len(clean.split()) <= 10:
+            for nl in lookahead:
+                if not nl.strip():
+                    continue
+                if BULLET_RE.match(nl):
+                    return True
+                break
+    # contains tech token (e.g., "Portal | Node.js, MongoDB")
+    if _contains_tech_token(s):
+        return True
+    # short uppercase/TitleCase without verbs could be a title (allow)
+    if len(s.split()) <= 6 and not s.endswith('.'):
+        # prevent accepting sentences with many stopwords
+        if len([w for w in s.split() if w.lower() in {"and","the","of","for","with"}]) < 3:
+            return True
+    return False
+
+def extract_projects(text: str, debug: bool = False) -> Tuple[List[str], List[Dict[str,Any]]]:
+    """
+    Returns (project_names, debug_groups).
+    debug_groups is a list of dicts showing which lines were considered titles/bullets.
+    If debug=False returns (project_names, []).
+    """
+    lines = _find_section_lines(text)
+    if not lines:
+        return [], []
+
+    project_names: List[str] = []
+    debug_groups: List[Dict[str, Any]] = []
+    current = None  # {"title":str, "bullets":list, "lines":list, "start_idx":int}
+
+    for i, ln in enumerate(lines + [""]):
+        s = ln.rstrip()
+        lookahead = lines[i+1:i+6] if i < len(lines) else []
+
+        if not s.strip():
+            # blank line signals potential boundary — flush later when next title appears
+            continue
+
+        # skip tiny uppercase labels likely table headers
+        if s.isupper() and len(s.split()) <= 4:
+            continue
+
+        # treat date-only lines as metadata (attach to current)
+        if DATE_RE.search(s) and len(s.split()) <= 4:
+            if current:
+                current.setdefault("meta", {})["date_line"] = s.strip()
+            continue
+
+        is_title = _looks_like_title(s, lookahead)
+        if is_title:
+            # flush previous
+            if current:
+                debug_groups.append(current)
+                # accept project if it had bullets or title contains tech
+                has_bullets = bool(current.get("bullets"))
+                if has_bullets or _contains_tech_token(current.get("title","")):
+                    candidate = current["title"].strip()
+                    if len(candidate) >= 3 and not candidate.lower().startswith(("project", "projects")):
+                        project_names.append(candidate)
+            # start new
+            title = re.sub(r'^[\s\-\u2022\*\.\d\)]*\s*', '', s).strip()
+            current = {"title": title, "bullets": [], "lines": [s], "start_idx": i}
+            continue
+
+        # bullet -> attach
+        if BULLET_RE.match(s):
+            if not current:
+                # create an untitled project if bullet contains tech tokens or is short/useful
+                candidate_text = BULLET_RE.sub('', s).strip()
+                if _contains_tech_token(candidate_text) or len(candidate_text.split()) <= 10:
+                    current = {"title": "Untitled Project", "bullets": [], "lines": [], "start_idx": i}
+                else:
+                    # ignore stray bullet
+                    continue
+            current["bullets"].append(BULLET_RE.sub('', s).strip())
+            current["lines"].append(s)
+            continue
+
+        # continuation (non-bullet)
+        if current:
+            if current["bullets"]:
+                # append to last bullet (continuation)
+                current["bullets"][-1] = current["bullets"][-1] + " " + s.strip()
+            else:
+                current["lines"].append(s)
+            continue
+
+        # stray non-bullet non-title: ignore conservatively
+        continue
+
+    # flush final
+    if current:
+        debug_groups.append(current)
+        if (current.get("bullets") and any(b.strip() for b in current["bullets"])) or _contains_tech_token(current["title"]):
+            candidate = current["title"].strip()
+            if len(candidate) >= 3 and not candidate.lower().startswith(("project", "projects")):
+                project_names.append(candidate)
+
+    # dedupe preserving order
+    seen = set()
+    ordered = []
+    for p in project_names:
+        key = p.lower()
+        if key not in seen:
+            seen.add(key)
+            ordered.append(p)
+    if debug:
+        return ordered, debug_groups
+    return ordered, []
